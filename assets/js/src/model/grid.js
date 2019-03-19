@@ -11,75 +11,15 @@ export class Grid {
 		this.blockSize = opts.blockSize || BLOCK_SIZE;
 		this.width = Math.floor(opts.width / this.blockSize);
 		this.height = Math.floor(opts.height / this.blockSize);
+		this.startingPosition = opts.startingPosition;
 	}
 
 	/** Sets the active piece in the grid (that is, the one the player is messing with. */
 	setActivePiece(tetronimo) {
-		if (this.activePiece) {
-			this._keepPieceInPlace(this.activePiece);
-		}
-
 		this.activePiece = tetronimo;
-	}
-
-	/** Moves the active piece to the left. */
-	moveLeft() {
-		let isValid = true;
-
-		this.activePiece.sprites.forEach((sprite) => {
-			if (sprite.x - BLOCK_SIZE <= 0) {
-				isValid = false;
-				return;
-			}
+		tetronimo.setOriginPosition({ 
+			x: this.startingPosition.x * BLOCK_SIZE + BLOCK_SIZE / 2, 
+			y: this.startingPosition.y * BLOCK_SIZE + BLOCK_SIZE / 2,
 		});
-
-		if (isValid) {
-			this.activePiece.moveLeft(BLOCK_SIZE);
-		}
-	}
-
-	/** Moves the active piece to the right. */
-	moveRight() {
-		let isValid = true;
-
-		this.activePiece.sprites.forEach((sprite) => {
-			if ((sprite.x + BLOCK_SIZE) / BLOCK_SIZE > this.width) {
-				isValid = false;
-				return;
-			}
-		});
-
-		if (isValid) {
-			this.activePiece.moveRight(BLOCK_SIZE);
-		}
-	}
-
-	/** Shifts the active piece down one step. Returns true if it occurred, or false if it could not. */
-	shiftDown() {
-		let isValid = true;
-
-		this.activePiece.sprites.forEach((sprite) => {
-			if ((sprite.y + BLOCK_SIZE) / BLOCK_SIZE > this.height) {
-				isValid = false;
-				return;
-			}
-		});
-
-		if (isValid) {
-			this.activePiece.moveDown(BLOCK_SIZE);
-		}
-
-		return isValid;
-	}
-
-	rotate() {
-		this.activePiece.rotate();
-	}
-
-	/*---PRIVATE */
-
-	/** Helper method. Makes the piece provided sit in place. */
-	_keepPieceInPlace(tetronimo) {
-		console.warn('This needs to be implemented');
 	}
 }
