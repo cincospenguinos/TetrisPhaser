@@ -6,8 +6,9 @@
  * resources from the server, and `create()` which instantiates the various pieces of the game in preparation
  * for `update()`.
  */
-import { KEYS, SPRITES, TETRONIMO_TYPES, BLOCK_SIZE } from '../const.js';
+import { KEYS, SPRITES, TETRONIMO_TYPES, BLOCK_SIZE, WIDTH, HEIGHT } from '../const.js';
 import { TetronimoFactory } from '../service/tetronimoFactory.js';
+import { Grid } from '../model/grid.js';
 
 export class PuzzleScene extends Phaser.Scene {
 	constructor() {
@@ -15,9 +16,10 @@ export class PuzzleScene extends Phaser.Scene {
 	}
 
 	init(data) {
-		this.level = data.level;
-
 		this.factory = new TetronimoFactory(this);
+		this.grid = new Grid({ width: WIDTH, height: HEIGHT });
+
+		this.INITIAL_POSITION = { x: 4 * BLOCK_SIZE + BLOCK_SIZE / 2, y: BLOCK_SIZE / 2 }; // Creating a variable is a good way to keep things tidy
 	}
 
 	preload() {
@@ -27,9 +29,9 @@ export class PuzzleScene extends Phaser.Scene {
 	}
 
 	create() {
-		// Instantiate puzzle piece
 		this.cursors = this.input.keyboard.createCursorKeys();
-		this.sprite = this.factory.createTetronimo({ x: 150, y: 150 }, TETRONIMO_TYPES.RANDOM);
+		const activePiece = this.factory.createTetronimo(this.INITIAL_POSITION, TETRONIMO_TYPES.RANDOM);
+		this.grid.setActivePiece(activePiece);
 	}
 
 	update() {
@@ -46,8 +48,14 @@ export class PuzzleScene extends Phaser.Scene {
 
 	/** Helper method. Handles any input the player provides. */
 	_handleInput() {
-		if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
-			
+		if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+			this.grid.moveLeft();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+			this.grid.moveRight();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			this.grid.shiftDown();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			this.grid.rotate();
 		}
 	}
 }

@@ -3,7 +3,8 @@
  *
  * Where we keep constants for various things. This will greatly reduce issues with keys
  * and where/how things in the game are configured. We will keep all of those "magic numbers"
- * here so that they aren't magic anymore.
+ * here so that they aren't magic anymore. This will greatly reduce cognitive load as we go
+ * about creating things.
  */
 export const KEYS = {
 	scenes: {
@@ -41,3 +42,5 @@ export const FRAME_NUMBERS = {
 }
 
 export const BLOCK_SIZE = 32;
+export const WIDTH = 10 * BLOCK_SIZE;
+export const HEIGHT = 20 * BLOCK_SIZE;
