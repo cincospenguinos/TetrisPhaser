@@ -5,6 +5,7 @@
  * with the puzzle scene, and then call any of its methods to get the piece requested.
  */
 import { KEYS, SPRITES, TETRONIMO_TYPES, FRAME_NUMBERS, BLOCK_SIZE } from '../const.js';
+import { Block } from '../model/block.js';
 import { Tetronimo } from '../model/tetronimo.js';
 
 export class TetronimoFactory {
@@ -18,12 +19,11 @@ export class TetronimoFactory {
 			type = this._randomType();
 		}
 
-		const origin = this.scene.physics.add.sprite(position.x, position.y, KEYS.sprites.blocks);
-		const sprites = this._createOtherSpritesFor(position, type);
-		sprites.push(origin);
+		const origin = new Block(position);
+		const blocks = this._createOtherBlocksAround(position, type);
+		blocks.push(origin);
 
-		sprites.forEach(sprite => sprite.setFrame(FRAME_NUMBERS[type]));
-		return new Tetronimo({ origin: origin, sprites: sprites, type: type });
+		return new Tetronimo({ origin: origin, blocks: blocks, type: type });
 	}
 
 	/*---PRIVATE */
@@ -35,68 +35,86 @@ export class TetronimoFactory {
 		return validTypes[key];
 	}
 
-	/** Helper method. Returns the set of sprites associated with the type provided, around the position provided. */
-	_createOtherSpritesFor(position, type) {
-		const sprites = [];
+	/** Helper method. Returns the set of blocks associated with the type provided, around the position provided. */
+	_createOtherBlocksAround(origin, type) {
+		const blocks = [];
 
 		switch(type) {
 			case TETRONIMO_TYPES.SQUARE:
-				sprites.push(this._spriteFor(position, 'right'));
-				sprites.push(this._spriteFor(position, 'up right'));
-				sprites.push(this._spriteFor(position, 'up'));
+				blocks.push(this._blockFor(origin, 'right'));
+				blocks.push(this._blockFor(origin, 'up right'));
+				blocks.push(this._blockFor(origin, 'up'));
 				break;
 			case TETRONIMO_TYPES.LETTER_L:
-				sprites.push(this._spriteFor(position, 'right'));
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'double up'));
+				blocks.push(this._blockFor(origin, 'right'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'double up'));
 				break;
 			case TETRONIMO_TYPES.REVERSE_LETTER_L:
-				sprites.push(this._spriteFor(position, 'double up'));
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'left'));
+				blocks.push(this._blockFor(origin, 'double up'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'left'));
 				break;
 			case TETRONIMO_TYPES.LONG_PIECE:
-				sprites.push(this._spriteFor(position, 'double up'));
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'down'));
+				blocks.push(this._blockFor(origin, 'double up'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'down'));
 				break;
 			case TETRONIMO_TYPES.JANKY:
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'left'));
-				sprites.push(this._spriteFor(position, 'right'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'left'));
+				blocks.push(this._blockFor(origin, 'right'));
 				break;
 			case TETRONIMO_TYPES.ZIG_ZAG:
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'left'));
-				sprites.push(this._spriteFor(position, 'up right'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'left'));
+				blocks.push(this._blockFor(origin, 'up right'));
 				break;
 			case TETRONIMO_TYPES.REVERSE_ZIG_ZAG:
-				sprites.push(this._spriteFor(position, 'up'));
-				sprites.push(this._spriteFor(position, 'right'));
-				sprites.push(this._spriteFor(position, 'up left'));
+				blocks.push(this._blockFor(origin, 'up'));
+				blocks.push(this._blockFor(origin, 'right'));
+				blocks.push(this._blockFor(origin, 'up left'));
 				break;
 		}
 
-		return sprites;
+		return blocks;
 	}
 
 	/** Helper method. Returns a sprite relative to the position provided in the direction provided. */
-	_spriteFor(position, direction) {
+	_blockFor(origin, direction) {
+		let position = {};
+
 		switch(direction) {
 			case 'up':
-				return this.scene.physics.add.sprite(position.x, position.y - BLOCK_SIZE, KEYS.sprites.blocks)
+				position.x = origin.x;
+				position.y = origin.y - BLOCK_SIZE;
+				break;
 			case 'double up':
-				return this.scene.physics.add.sprite(position.x, position.y - BLOCK_SIZE * 2, KEYS.sprites.blocks);
+				position.x = origin.x;
+				position.y = origin.y - BLOCK_SIZE * 2;
+				break;
 			case 'left':
-				return this.scene.physics.add.sprite(position.x - BLOCK_SIZE, position.y, KEYS.sprites.blocks);
+				position.x = origin.x - BLOCK_SIZE;
+				position.y = origin.y;
+				break;
 			case 'right':
-				return this.scene.physics.add.sprite(position.x + BLOCK_SIZE, position.y, KEYS.sprites.blocks);
+				position.x = origin.x + BLOCK_SIZE;
+				position.y = origin.y;
+				break;
 			case 'up right':
-				return this.scene.physics.add.sprite(position.x + BLOCK_SIZE, position.y - BLOCK_SIZE, KEYS.sprites.blocks);
+				position.x = origin.x + BLOCK_SIZE;
+				position.y = origin.y + BLOCK_SIZE;
+				break;
 			case 'down':
-				return this.scene.physics.add.sprite(position.x, position.y + BLOCK_SIZE, KEYS.sprites.blocks);
+				position.x = origin.x;
+				position.y = origin.y + BLOCK_SIZE;
+				break;
 			case 'up left':
-				return this.scene.physics.add.sprite(position.x - BLOCK_SIZE, position.y - BLOCK_SIZE, KEYS.sprites.blocks);
+				position.x = position.x - BLOCK_SIZE;
+				position.y = position.y - BLOCK_SIZE;
+				break;
 		}
+
+		return new Block(position);
 	}
 }

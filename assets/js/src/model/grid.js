@@ -8,8 +8,9 @@ import { BLOCK_SIZE } from '../const.js';
 
 export class Grid {
 	constructor(opts) {
-		this.width = Math.floor(opts.width / BLOCK_SIZE);
-		this.height = Math.floor(opts.height / BLOCK_SIZE);
+		this.blockSize = opts.blockSize || BLOCK_SIZE;
+		this.width = Math.floor(opts.width / this.blockSize);
+		this.height = Math.floor(opts.height / this.blockSize);
 	}
 
 	/** Sets the active piece in the grid (that is, the one the player is messing with. */
