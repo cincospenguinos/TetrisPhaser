@@ -1,4 +1,4 @@
-# PhaserTetris
+# TetrisPhaser
 
 The game of Tetris, created in Phaser 3. This repo exists to
 
