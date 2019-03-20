@@ -30,30 +30,30 @@ QUnit.module('Grid', () => {
 
 			const response = grid.moveLeft();
 			assert.ok(response.valid);
+			assert.equal(grid.getActivePiece().getOriginPosition().x, (5 * BLOCK_SIZE - BLOCK_SIZE) + BLOCK_SIZE / 2);
 		});
 
 		QUnit.test('allows the active piece to move right when space is empty', (assert) => {
 			const grid = TestHelper.createGrid({
-				width: 10,
-				height: 10,
-				blockSize: 1,
+				width: 10 * BLOCK_SIZE,
+				height: 10 * BLOCK_SIZE,
 				startingPosition: { x: 5, y: 0 },
 			});
-			const tetronimo = TestHelper.getTetronimo(TETRONIMO_TYPES.SQUARE);
+			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
 			grid.setActivePiece(tetronimo);
 
 			const response = grid.moveRight();
 			assert.ok(response.valid);
+			assert.equal(grid.getActivePiece().getOriginPosition().x, 5 * BLOCK_SIZE + BLOCK_SIZE + BLOCK_SIZE / 2);
 		});
 
 		QUnit.test('does not allow active piece to move left or right on edge', (assert) => {
 			const grid = TestHelper.createGrid({
-				width: 1,
-				height: 10,
-				blockSize: 1,
+				width: 1 * BLOCK_SIZE,
+				height: 10 * BLOCK_SIZE,
 				startingPosition: { x: 0, y: 0 },
 			});
-			const tetronimo = TestHelper.getTetronimo(TETRONIMO_TYPES.SQUARE);
+			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.LONG_PIECE);
 			grid.setActivePiece(tetronimo);
 
 			let response = grid.moveLeft();
