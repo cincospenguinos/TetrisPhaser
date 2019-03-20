@@ -25,7 +25,6 @@ export class Grid {
 
 	/** Moves the active piece to the left, or doesn't if it can't. */
 	moveLeft() {
-		// debugger;
 		let valid = this._validMovementTo('left');
 
 		if (valid) {
@@ -45,6 +44,20 @@ export class Grid {
 		if (valid) {
 			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
 			const newOriginGridUnits = this._positionTo('right', originGridUnits);
+			const newOrigin = this._toPixels(newOriginGridUnits);
+			this.activePiece.setOriginPosition(newOrigin);
+		}
+
+		return { valid: valid };
+	}
+
+	/** Moves the active piece downwards, or doesn't if it can't. */
+	shiftDown() {
+		let valid = this._validMovementTo('down');
+
+		if (valid) {
+			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
+			const newOriginGridUnits = this._positionTo('down', originGridUnits);
 			const newOrigin = this._toPixels(newOriginGridUnits);
 			this.activePiece.setOriginPosition(newOrigin);
 		}
@@ -87,6 +100,8 @@ export class Grid {
 				return { x: position.x - 1, y: position.y };
 			case 'right':
 				return { x: position.x + 1, y: position.y };
+			case 'down':
+				return { x: position.x, y: position.y + 1 };
 		}
 	}
 

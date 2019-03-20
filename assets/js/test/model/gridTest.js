@@ -62,5 +62,33 @@ QUnit.module('Grid', () => {
 			response = grid.moveRight();
 			assert.notOk(response.valid);
 		});
+
+		QUnit.test('allows movement downwards', (assert) => {
+			const grid = TestHelper.createGrid({
+				width: 10 * BLOCK_SIZE,
+				height: 10 * BLOCK_SIZE,
+				startingPosition: { x: 0, y: 0 },
+			});
+			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.LONG_PIECE);
+			grid.setActivePiece(tetronimo);
+
+			let response = grid.shiftDown();
+			assert.ok(response.valid);
+			assert.equal(tetronimo.getOriginPosition().x, BLOCK_SIZE / 2);
+			assert.equal(tetronimo.getOriginPosition().y, 1 * BLOCK_SIZE + BLOCK_SIZE / 2);
+		});
+
+		QUnit.test('does not allow movement downwards when on the edge', (assert) => {
+			const grid = TestHelper.createGrid({
+				width: 10 * BLOCK_SIZE,
+				height: 1 * BLOCK_SIZE,
+				startingPosition: { x: 0, y: 0 },
+			});
+			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.LONG_PIECE);
+			grid.setActivePiece(tetronimo);
+
+			let response = grid.shiftDown();
+			assert.notOk(response.valid);
+		});
 	})
 });
