@@ -7,27 +7,35 @@
 export class Tetronimo {
 	constructor(opts) {
 		this.type = opts.type;
-		this.sprites = opts.sprites;
+		this.blocks = opts.blocks || [];
 		this.origin = opts.origin;
+
+		if (this.blocks.length !== 4) {
+			throw 'A tetronimo must have 4 blocks!';
+		}
 	}
 
-	/** Moves the tetronimo to the left the number of pixels provided. */
-	moveLeft(amount) {
-		this.sprites.forEach(sprite => sprite.setX(sprite.x - amount));
+	getBlocks() {
+		return this.blocks;
 	}
 
-	/** Moves the tetronimo to the right the number of pixels provided. */
-	moveRight(amount) {
-		this.sprites.forEach(sprite => sprite.setX(sprite.x + amount));
+	getOriginPosition() {
+		return this.origin.getPosition();
 	}
 
-	/** Moves the tetronimo down the number of pixels provided. */
-	moveDown(amount) {
-		this.sprites.forEach(sprite => sprite.setY(sprite.y + amount));
+	/** Sets the origin position of this tetronimo, and all the other blocks around it. */
+	setOriginPosition(position) {
+		const diff = this._getDiff(this.origin.getPosition(), position);
+		this.blocks.forEach((block) => {
+			block.setPosition({ 
+				x: block.getPosition().x + diff.x, 
+				y: block.getPosition().y + diff.y,
+			});
+		});
 	}
 
-	/** Rotates the tetronimo by 90 degrees to the right. */
-	rotate() {
-		throw 'Implement me!';
+	/*---PRIVATE */
+	_getDiff(oldPosition, newPosition) {
+		return { x: newPosition.x - oldPosition.x, y: newPosition.y - oldPosition.y };
 	}
 }
