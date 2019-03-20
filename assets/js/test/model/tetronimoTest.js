@@ -1,30 +1,64 @@
 /**
  * tetronimoTest.js
  */
-import { TETRONIMO_TYPES } from '../../src/const.js';
+import { TETRONIMO_TYPES, BLOCK_SIZE } from '../../src/const.js';
 import { Tetronimo } from '../../src/model/tetronimo.js';
 import { TestHelper } from '../testHelper.js';
 
 QUnit.module('TetronimoTest', () => {
-	QUnit.test('moving the origin position moves the rest of the tetronimo', (assert) => {
-		const tetronimo = TestHelper.getTetronimo({ x: 5, y: 5 }, TETRONIMO_TYPES.REVERSE_LETTER_L);
+	QUnit.module('movement', () => {
+		QUnit.test('LEFT', (assert) => {
+			const tetronimo = TestHelper.getTetronimo({ 
+				x: 5 * BLOCK_SIZE / 2, 
+				y: 3 * BLOCK_SIZE / 2 
+			}, 
+			TETRONIMO_TYPES.REVERSE_LETTER_L);
 
-		let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
-		tetronimo.moveTo({ x: 50, y: 13 });
-		let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
+			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
+			const valid = tetronimo.applyMovement(Tetronimo.LEFT, 0);
+			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
-		for (let i = 0; i < oldPositions.length; i++) {
-			assert.equal(newPositions[i].x, oldPositions[i].x + 45);
-			assert.equal(newPositions[i].y, oldPositions[i].y + 8);
-		}
+			assert.ok(valid);
+			for (let i = 0; i < oldPositions.length; i++) {
+				assert.equal(newPositions[i].x, oldPositions[i].x - BLOCK_SIZE);
+				assert.equal(newPositions[i].y, oldPositions[i].y);
+			}
+		});
 
-		oldPositions = newPositions;
-		tetronimo.moveTo({ x: 0, y: 0});
-		newPositions = tetronimo.getBlocks().map(block => block.getPosition());
+		QUnit.test('RIGHT', (assert) => {
+			const tetronimo = TestHelper.getTetronimo({ 
+				x: 3 * BLOCK_SIZE / 2, 
+				y: 3 * BLOCK_SIZE / 2 
+			}, 
+			TETRONIMO_TYPES.REVERSE_LETTER_L);
 
-		for (let i = 0; i < oldPositions.length; i++) {
-			assert.equal(newPositions[i].x, oldPositions[i].x - 50);
-			assert.equal(newPositions[i].y, oldPositions[i].y - 13);
-		}		
+			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
+			const valid = tetronimo.applyMovement(Tetronimo.RIGHT, 8 * BLOCK_SIZE);
+			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
+
+			assert.ok(valid);
+			for (let i = 0; i < oldPositions.length; i++) {
+				assert.equal(newPositions[i].x, oldPositions[i].x + BLOCK_SIZE);
+				assert.equal(newPositions[i].y, oldPositions[i].y);
+			}
+		});
+
+		QUnit.test('DOWN', (assert) => {
+			const tetronimo = TestHelper.getTetronimo({ 
+				x: 3 * BLOCK_SIZE / 2, 
+				y: 3 * BLOCK_SIZE / 2 
+			}, 
+			TETRONIMO_TYPES.REVERSE_LETTER_L);
+
+			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
+			const valid = tetronimo.applyMovement(Tetronimo.DOWN, 8 * BLOCK_SIZE);
+			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
+
+			assert.ok(valid);
+			for (let i = 0; i < oldPositions.length; i++) {
+				assert.equal(newPositions[i].x, oldPositions[i].x);
+				assert.equal(newPositions[i].y, oldPositions[i].y + BLOCK_SIZE);
+			}
+		});
 	});
 });

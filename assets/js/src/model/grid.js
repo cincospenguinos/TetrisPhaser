@@ -5,12 +5,19 @@
  * definition of the object that keeps track of where pieces are and where they may go.
  */
 import { BLOCK_SIZE } from '../const.js';
+import { Tetronimo } from './tetronimo.js';
 
 export class Grid {
 	constructor(opts) {
 		this.width = Math.floor(opts.width / BLOCK_SIZE);
 		this.height = Math.floor(opts.height / BLOCK_SIZE);
 		this.startingPosition = opts.startingPosition;
+
+		this.boundaries = {
+			left: BLOCK_SIZE / 2,
+			right: this.width * BLOCK_SIZE - BLOCK_SIZE / 2,
+			down: this.height * BLOCK_SIZE - BLOCK_SIZE / 2,
+		};
 	}
 
 	getActivePiece() {
@@ -20,96 +27,37 @@ export class Grid {
 	/** Sets the active piece in the grid (that is, the one the player is messing with. */
 	setActivePiece(tetronimo) {
 		this.activePiece = tetronimo;
-		tetronimo.moveTo(this._toPixels(this.startingPosition));
+		tetronimo.setOriginPosition(this._toPixels(this.startingPosition));
 	}
 
 	/** Moves the active piece to the left, or doesn't if it can't. */
 	moveLeft() {
-		let valid = this._validMovementTo('left');
-
-		if (valid) {
-			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
-			const newOriginGridUnits = this._positionTo('left', originGridUnits);
-			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.moveTo(newOrigin);
-		}
-
+		const boundary = this.boundaries.left;
+		const valid = this.activePiece.applyMovement(Tetronimo.LEFT, boundary);
 		return { valid: valid };
 	}
 
 	/** Moves the active piece to the right, or doesn't if it can't. */
 	moveRight() {
-		let valid = this._validMovementTo('right');
-
-		if (valid) {
-			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
-			const newOriginGridUnits = this._positionTo('right', originGridUnits);
-			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.moveTo(newOrigin);
-		}
-
+		const boundary = this.boundaries.right;
+		const valid = this.activePiece.applyMovement(Tetronimo.RIGHT, boundary);
 		return { valid: valid };
 	}
 
 	/** Moves the active piece downwards, or doesn't if it can't. */
 	shiftDown() {
-		let valid = this._validMovementTo('down');
-
-		if (valid) {
-			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
-			const newOriginGridUnits = this._positionTo('down', originGridUnits);
-			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.moveTo(newOrigin);
-		}
-
+		const boundary = this.boundaries.down;
+		const valid = this.activePiece.applyMovement(Tetronimo.DOWN, boundary);
 		return { valid: valid };
 	}
 
 	/** Rotates the active piece, or doesn't if it can't. */
 	rotate() {
-		// let valid = this.
+		throw 'Implement me!';
 		return { valid: true };
 	}
 
 	/*---PRIVATE */
-
-	/** Helper method. Returns true if the active piece can move in the direction provided. */
-	_validMovementTo(direction) {
-		let valid = true; // TODO: Check if you can use an `any()` method to explore this
-		this.activePiece.getBlocks().forEach((block) => {
-			const newPosition = this._positionTo(direction, this._toGridUnits(block.getPosition()));
-			if (!this._isPositionEmpty(newPosition) || this._isPositionOutOfBounds(newPosition)) {
-				valid = false;
-				return;
-			}
-		});
-		return valid;
-	}
-
-	/** Helper method. Returns true if the position provided is out of bounds. */
-	_isPositionOutOfBounds(position) {
-		const breaksX = position.x < 0 || position.x >= this.width;
-		const breaksY = position.y >= this.height;
-
-		return breaksX || breaksY;
-	}
-
-	/** Helper method. Returns whether or not the position provided in the grid is empty. */
-	_isPositionEmpty(position) { // TODO: This
-		return true;
-	}
-
-	/** Helper method. Returns the grid position to the direction of the position provided. */
-	_positionTo(direction, position) {
-		switch(direction) {
-			case 'left':
-				return { x: position.x - 1, y: position.y };
-			case 'right':
-				return { x: position.x + 1, y: position.y };
-			case 'down':
-				return { x: position.x, y: position.y + 1 };
-		}
-	}
 
 	/** Helper method. Converts position from grid units to pixels. */
 	_toPixels(position) {

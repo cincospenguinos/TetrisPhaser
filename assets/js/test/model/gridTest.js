@@ -91,18 +91,18 @@ QUnit.module('Grid', () => {
 			assert.notOk(response.valid);
 		});
 
-		QUnit.test('allows rotation when available', (assert) => {
-			const grid = TestHelper.createGrid({
-				width: 10 * BLOCK_SIZE,
-				height: 10 * BLOCK_SIZE,
-				startingPosition: { x: 0, y: 0 },
-			});
-			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.LONG_PIECE);
-			grid.setActivePiece(tetronimo);
+		// QUnit.test('allows rotation when available', (assert) => {
+		// 	const grid = TestHelper.createGrid({
+		// 		width: 10 * BLOCK_SIZE,
+		// 		height: 10 * BLOCK_SIZE,
+		// 		startingPosition: { x: 0, y: 0 },
+		// 	});
+		// 	const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.LONG_PIECE);
+		// 	grid.setActivePiece(tetronimo);
 
-			let response = grid.rotate();
-			assert.ok(response.valid);
-		});
+		// 	let response = grid.rotate();
+		// 	assert.ok(response.valid);
+		// });
 
 		// QUnit.test('does not allow rotation when on the edge', (assert) => {
 
