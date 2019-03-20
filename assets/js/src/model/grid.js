@@ -17,9 +17,16 @@ export class Grid {
 	/** Sets the active piece in the grid (that is, the one the player is messing with. */
 	setActivePiece(tetronimo) {
 		this.activePiece = tetronimo;
-		tetronimo.setOriginPosition({ 
+		tetronimo.setOriginPosition(this._startingPositionInPixels());
+	}
+
+	/*---PRIVATE */
+
+	/** Helper method. Returns the starting position in pixels rather than blocks. */
+	_startingPositionInPixels() {
+		return { 
 			x: this.startingPosition.x * BLOCK_SIZE + BLOCK_SIZE / 2, 
 			y: this.startingPosition.y * BLOCK_SIZE + BLOCK_SIZE / 2,
-		});
+		};
 	}
 }
