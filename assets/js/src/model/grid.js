@@ -20,7 +20,7 @@ export class Grid {
 	/** Sets the active piece in the grid (that is, the one the player is messing with. */
 	setActivePiece(tetronimo) {
 		this.activePiece = tetronimo;
-		tetronimo.setOriginPosition(this._toPixels(this.startingPosition));
+		tetronimo.moveTo(this._toPixels(this.startingPosition));
 	}
 
 	/** Moves the active piece to the left, or doesn't if it can't. */
@@ -31,7 +31,7 @@ export class Grid {
 			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
 			const newOriginGridUnits = this._positionTo('left', originGridUnits);
 			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.setOriginPosition(newOrigin);
+			this.activePiece.moveTo(newOrigin);
 		}
 
 		return { valid: valid };
@@ -45,7 +45,7 @@ export class Grid {
 			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
 			const newOriginGridUnits = this._positionTo('right', originGridUnits);
 			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.setOriginPosition(newOrigin);
+			this.activePiece.moveTo(newOrigin);
 		}
 
 		return { valid: valid };
@@ -59,17 +59,23 @@ export class Grid {
 			const originGridUnits = this._toGridUnits(this.activePiece.getOriginPosition());
 			const newOriginGridUnits = this._positionTo('down', originGridUnits);
 			const newOrigin = this._toPixels(newOriginGridUnits);
-			this.activePiece.setOriginPosition(newOrigin);
+			this.activePiece.moveTo(newOrigin);
 		}
 
 		return { valid: valid };
+	}
+
+	/** Rotates the active piece, or doesn't if it can't. */
+	rotate() {
+		// let valid = this.
+		return { valid: true };
 	}
 
 	/*---PRIVATE */
 
 	/** Helper method. Returns true if the active piece can move in the direction provided. */
 	_validMovementTo(direction) {
-		let valid = true;
+		let valid = true; // TODO: Check if you can use an `any()` method to explore this
 		this.activePiece.getBlocks().forEach((block) => {
 			const newPosition = this._positionTo(direction, this._toGridUnits(block.getPosition()));
 			if (!this._isPositionEmpty(newPosition) || this._isPositionOutOfBounds(newPosition)) {

@@ -28,7 +28,7 @@ export class Tetronimo {
 	}
 
 	/** Sets the origin position of this tetronimo, and all the other blocks around it. */
-	setOriginPosition(position) {
+	moveTo(position) {
 		const diff = this._getDiff(this.origin.getPosition(), position);
 		this.blocks.forEach((block) => {
 			block.setPosition({ 

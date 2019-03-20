@@ -10,7 +10,7 @@ QUnit.module('TetronimoTest', () => {
 		const tetronimo = TestHelper.getTetronimo({ x: 5, y: 5 }, TETRONIMO_TYPES.REVERSE_LETTER_L);
 
 		let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
-		tetronimo.setOriginPosition({ x: 50, y: 13 });
+		tetronimo.moveTo({ x: 50, y: 13 });
 		let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
 		for (let i = 0; i < oldPositions.length; i++) {
@@ -19,7 +19,7 @@ QUnit.module('TetronimoTest', () => {
 		}
 
 		oldPositions = newPositions;
-		tetronimo.setOriginPosition({ x: 0, y: 0});
+		tetronimo.moveTo({ x: 0, y: 0});
 		newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
 		for (let i = 0; i < oldPositions.length; i++) {
