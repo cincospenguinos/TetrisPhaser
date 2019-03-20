@@ -35,10 +35,6 @@ export class Tetronimo {
 		});
 	}
 
-	getType() {
-		return this.type;
-	}
-
 	/** Applies the movement provided unless it would break the boundary provided. */
 	applyMovement(movement, boundary) {
 		let valid = true;
