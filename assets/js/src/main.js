@@ -11,13 +11,6 @@ let config = {
 	width: WIDTH,
 	height: HEIGHT,
 	scene: [GameplayScene],
-	physics: {
-		default: 'arcade',
-		arcade: {
-			gravity: {},
-			debug: true,
-		}
-	}
 }
 
 let game = new Phaser.Game(config);
