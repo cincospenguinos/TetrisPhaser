@@ -25,6 +25,10 @@ export class Tetronimo {
 		return this.origin.getPosition();
 	}
 
+	getType() {
+		return this.type;
+	}
+
 	setOriginPosition(position) {
 		const diff = this._getDiff(this.origin.getPosition(), position);
 		this.blocks.forEach((block) => {
