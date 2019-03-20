@@ -8,7 +8,7 @@
  */
 export const KEYS = {
 	scenes: {
-		puzzleScene: 'PuzzleScene',
+		gameplayScene: 'GameplayScene',
 	},
 	sprites: {
 		blocks: 'blocks',

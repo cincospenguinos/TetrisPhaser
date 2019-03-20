@@ -4,13 +4,13 @@
  * The main entry point for Phaser to work its magic.
  */
 import { WIDTH, HEIGHT } from './const.js';
-import { PuzzleScene } from './scene/puzzleScene.js';
+import { GameplayScene } from './scene/gameplayScene.js';
 
 let config = {
 	type: Phaser.AUTO,
 	width: WIDTH,
 	height: HEIGHT,
-	scene: [PuzzleScene],
+	scene: [GameplayScene],
 	physics: {
 		default: 'arcade',
 		arcade: {
