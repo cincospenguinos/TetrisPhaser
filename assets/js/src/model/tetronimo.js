@@ -23,6 +23,10 @@ export class Tetronimo {
 		return this.origin.getPosition();
 	}
 
+	getType() {
+		return this.type;
+	}
+
 	/** Sets the origin position of this tetronimo, and all the other blocks around it. */
 	setOriginPosition(position) {
 		const diff = this._getDiff(this.origin.getPosition(), position);

@@ -8,9 +8,8 @@ import { BLOCK_SIZE } from '../const.js';
 
 export class Grid {
 	constructor(opts) {
-		this.blockSize = BLOCK_SIZE;
-		this.width = Math.floor(opts.width / this.blockSize);
-		this.height = Math.floor(opts.height / this.blockSize);
+		this.width = Math.floor(opts.width / BLOCK_SIZE);
+		this.height = Math.floor(opts.height / BLOCK_SIZE);
 		this.startingPosition = opts.startingPosition;
 	}
 
@@ -26,6 +25,7 @@ export class Grid {
 
 	/** Moves the active piece to the left, or doesn't if it can't. */
 	moveLeft() {
+		// debugger;
 		let valid = this._validMovementTo('left');
 
 		if (valid) {

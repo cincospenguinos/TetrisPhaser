@@ -8,6 +8,7 @@
  */
 import { KEYS, SPRITES, TETRONIMO_TYPES, BLOCK_SIZE, WIDTH, HEIGHT } from '../const.js';
 import { TetronimoFactory } from '../service/tetronimoFactory.js';
+import { GameplayHelper } from '../service/gameplayHelper.js';
 import { Grid } from '../model/grid.js';
 
 export class GameplayScene extends Phaser.Scene {
@@ -16,15 +17,31 @@ export class GameplayScene extends Phaser.Scene {
 	}
 
 	init(data) {
+		this.startingPosition = { x: Math.floor((WIDTH / BLOCK_SIZE) / 2), y: 0 };
+		this.grid = new Grid({
+			width: WIDTH, 
+			height: HEIGHT, 
+			startingPosition: this.startingPosition,
+		});
+
+		this.factory = new TetronimoFactory();
+		this.helper = new GameplayHelper(this);
 	}
 
 	preload() {
+		this.load.spritesheet(KEYS.sprites.blocks, SPRITES[KEYS.sprites.blocks], 
+			{ frameWidth: BLOCK_SIZE, frameHeight: BLOCK_SIZE });
 	}
 
 	create() {
+		this.cursors = this.input.keyboard.createCursorKeys();
+		const activePiece = this.factory.createTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.RANDOM);
+		this.helper.createSpritesFor(activePiece);
+		this.grid.setActivePiece(activePiece);
 	}
 
 	update() {
+		this._handleInput();
 	}
 
 	/*---PRIVATE */
@@ -36,5 +53,14 @@ export class GameplayScene extends Phaser.Scene {
 
 	/** Helper method. Handles any input the player provides. */
 	_handleInput() {
+		if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+			this.grid.moveLeft();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+			this.grid.moveRight();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			this.grid.shiftDown();
+		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			this.grid.rotate();
+		}
 	}
 }
