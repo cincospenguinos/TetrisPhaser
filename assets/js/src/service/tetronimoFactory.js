@@ -103,15 +103,15 @@ export class TetronimoFactory {
 				break;
 			case 'up right':
 				position.x = origin.x + BLOCK_SIZE;
-				position.y = origin.y + BLOCK_SIZE;
+				position.y = origin.y - BLOCK_SIZE;
 				break;
 			case 'down':
 				position.x = origin.x;
 				position.y = origin.y + BLOCK_SIZE;
 				break;
 			case 'up left':
-				position.x = position.x - BLOCK_SIZE;
-				position.y = position.y - BLOCK_SIZE;
+				position.x = origin.x - BLOCK_SIZE;
+				position.y = origin.y - BLOCK_SIZE;
 				break;
 		}
 
