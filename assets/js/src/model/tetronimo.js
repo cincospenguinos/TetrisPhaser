@@ -71,7 +71,33 @@ export class Tetronimo {
 			case Tetronimo.DOWN:
 				return { x: blockPosition.x, y: blockPosition.y + BLOCK_SIZE };
 			case Tetronimo.ROTATE:
-				throw 'Implement me!';
+				const originPosition = this.getOriginPosition();
+
+				if (originPosition.x === blockPosition.x && originPosition.y === blockPosition.y) {
+					return this.getOriginPosition();
+				}
+
+				const newPosition = {};
+				const diffX = Math.abs(originPosition.x - blockPosition.x);
+				const diffY = Math.abs(originPosition.y - blockPosition.y);
+
+				if (blockPosition.y < originPosition.y) {
+					newPosition.x = originPosition.x + diffY;
+				} else if (blockPosition.y > originPosition.y) {
+					newPosition.x = originPosition.x - diffY;
+				} else {
+					newPosition.x = originPosition.x;
+				}
+
+				if (blockPosition.x < originPosition.x) {
+					newPosition.y = originPosition.y - diffX;
+				} else if (blockPosition.x > originPosition.x){
+					newPosition.y = originPosition.y + diffX;
+				} else {
+					newPosition.y = originPosition.y;
+				}
+
+				return newPosition;
 		}
 	}
 
@@ -85,7 +111,7 @@ export class Tetronimo {
 			case Tetronimo.DOWN:
 				return position.y <= boundary;
 			case Tetronimo.ROTATE:
-				throw 'Implement me!';
+				return position.x >= boundary.left && position.x <= boundary.right && position.y <= boundary.down;
 		}
 	}
 

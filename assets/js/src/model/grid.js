@@ -53,8 +53,8 @@ export class Grid {
 
 	/** Rotates the active piece, or doesn't if it can't. */
 	rotate() {
-		throw 'Implement me!';
-		return { valid: true };
+		const valid = this.activePiece.applyMovement(Tetronimo.ROTATE, this.boundaries);
+		return { valid: valid };
 	}
 
 	/*---PRIVATE */
