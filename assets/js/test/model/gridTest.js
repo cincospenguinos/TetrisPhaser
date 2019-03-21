@@ -116,5 +116,20 @@ QUnit.module('Grid', () => {
 			let response = grid.rotate();
 			assert.notOk(response.valid);
 		});
+
+		QUnit.test('handles dropping downwards', (assert) => {
+			const grid = TestHelper.createGrid({
+				width: 2 * BLOCK_SIZE,
+				height: 10 * BLOCK_SIZE,
+				startingPosition: { x: 0, y: 0 },
+			});
+			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
+			grid.setActivePiece(tetronimo);
+
+			let response = grid.dropDown();
+			assert.ok(response.valid);
+			assert.equal(tetronimo.getOriginPosition().x, BLOCK_SIZE / 2);
+			assert.equal(tetronimo.getOriginPosition().y, 10 * BLOCK_SIZE - BLOCK_SIZE / 2);
+		});
 	})
 });

@@ -58,7 +58,7 @@ export class GameplayScene extends Phaser.Scene {
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
 			this.grid.moveRight();
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
-			this.grid.shiftDown(); // TODO: Switch this over to `dropDown()``
+			this.grid.dropDown();
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
 			this.grid.rotate(); // TODO: Handle rotation
 		}

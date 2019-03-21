@@ -57,6 +57,11 @@ export class Grid {
 		return { valid: valid };
 	}
 
+	dropDown() {
+		while(this.activePiece.applyMovement(Tetronimo.DOWN, this.boundaries.down));
+		return { valid: true };
+	}
+
 	/*---PRIVATE */
 
 	/** Helper method. Converts position from grid units to pixels. */
