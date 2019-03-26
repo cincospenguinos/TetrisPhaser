@@ -132,4 +132,19 @@ QUnit.module('Grid', () => {
 			assert.equal(tetronimo.getOriginPosition().y, 10 * BLOCK_SIZE - BLOCK_SIZE / 2);
 		});
 	})
+
+	QUnit.test('updates the active piece after dropping down', (assert) => {
+		const grid = TestHelper.createGrid({
+			width: 10 * BLOCK_SIZE,
+			height: 10 * BLOCK_SIZE,
+			startingPosition: { x: 5, y: 0 },
+		});
+		const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
+		const nextTetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
+		grid.setActivePiece(tetronimo);
+		grid.dropDown(nextTetronimo);
+		
+		assert.equal(nextTetronimo.getOriginPosition().x, 5 * BLOCK_SIZE + BLOCK_SIZE / 2);
+		assert.equal(nextTetronimo.getOriginPosition().y, 0 * BLOCK_SIZE + BLOCK_SIZE / 2);
+	});
 });

@@ -57,8 +57,9 @@ export class Grid {
 		return { valid: valid };
 	}
 
-	dropDown() {
-		while(this.activePiece.applyMovement(Tetronimo.DOWN, this.boundaries.down));
+	dropDown(nextPiece) {
+		while (this.activePiece.applyMovement(Tetronimo.DOWN, this.boundaries.down));
+		this.setActivePiece(nextPiece);
 		return { valid: true };
 	}
 
