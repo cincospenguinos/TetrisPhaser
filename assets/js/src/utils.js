@@ -3,6 +3,8 @@
  *
  * A few extra functions that help manage things. A junk drawer of sorts.
  */
+import { BLOCK_SIZE } from './const.js';
+
 export function toGridUnits(position) {
 	return {
 		x: (position.x - BLOCK_SIZE / 2) / BLOCK_SIZE,

@@ -35,9 +35,7 @@ export class GameplayScene extends Phaser.Scene {
 
 	create() {
 		this.cursors = this.input.keyboard.createCursorKeys();
-		const activePiece = this.factory.createTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.RANDOM);
-		this.helper.createSpritesFor(activePiece);
-		this.grid.setActivePiece(activePiece);
+		this.grid.setActivePiece(this._newTetronimo());
 	}
 
 	update() {
@@ -58,9 +56,16 @@ export class GameplayScene extends Phaser.Scene {
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
 			this.grid.moveRight();
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
-			this.grid.dropDown();
+			this.grid.dropDown(this._newTetronimo());
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
 			this.grid.rotate(); // TODO: Handle rotation
 		}
+	}
+
+	/** Helper method. Creates a new tetronimo and returns it with sprites applied. */
+	_newTetronimo(type = TETRONIMO_TYPES.RANDOM) {
+		const newPiece = this.factory.createTetronimo({ x: 0, y: 0 }, type);
+		this.helper.createSpritesFor(newPiece);
+		return newPiece;
 	}
 }
