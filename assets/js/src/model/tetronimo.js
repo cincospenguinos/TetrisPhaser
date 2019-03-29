@@ -4,6 +4,7 @@
  * A tetris piece. A polygon made up of four squares is called a tetronimo, so the
  * tetris piece class is called such.
  */
+import { toGridUnits } from '../utils.js';
 import { BLOCK_SIZE } from '../const.js';
 
 export class Tetronimo {
@@ -39,12 +40,14 @@ export class Tetronimo {
 		});
 	}
 
-	/** Applies the movement provided unless it would break the boundary provided. */
-	applyMovement(movement, boundary) {
+	/** Applies the movement provided unless a block already exists in the block set provided. */
+	applyMovement(movement, blockSet) {
 		let valid = true;
 		this.blocks.forEach((block) => {
 			const positionTo = this._positionTo(movement, block);
-			if (!this._respectsBoundary(positionTo, movement, boundary)) {
+			const gridPosition = toGridUnits(positionTo);
+
+			if (blockSet.hasBlockAt(gridPosition) || !blockSet.positionInBounds(gridPosition)) {
 				valid = false;
 				return;
 			}

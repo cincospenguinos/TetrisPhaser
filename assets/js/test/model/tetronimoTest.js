@@ -15,7 +15,7 @@ QUnit.module('TetronimoTest', () => {
 			TETRONIMO_TYPES.REVERSE_LETTER_L);
 
 			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
-			const valid = tetronimo.applyMovement(Tetronimo.LEFT, 0);
+			const valid = tetronimo.applyMovement(Tetronimo.LEFT, TestHelper.getBlockSet());
 			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
 			assert.ok(valid);
@@ -33,7 +33,7 @@ QUnit.module('TetronimoTest', () => {
 			TETRONIMO_TYPES.REVERSE_LETTER_L);
 
 			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
-			const valid = tetronimo.applyMovement(Tetronimo.RIGHT, 8 * BLOCK_SIZE);
+			const valid = tetronimo.applyMovement(Tetronimo.RIGHT, TestHelper.getBlockSet());
 			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
 			assert.ok(valid);
@@ -51,7 +51,7 @@ QUnit.module('TetronimoTest', () => {
 			TETRONIMO_TYPES.REVERSE_LETTER_L);
 
 			let oldPositions = tetronimo.getBlocks().map(block => block.getPosition());
-			const valid = tetronimo.applyMovement(Tetronimo.DOWN, 8 * BLOCK_SIZE);
+			const valid = tetronimo.applyMovement(Tetronimo.DOWN, TestHelper.getBlockSet());
 			let newPositions = tetronimo.getBlocks().map(block => block.getPosition());
 
 			assert.ok(valid);

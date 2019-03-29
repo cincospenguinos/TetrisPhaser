@@ -16,12 +16,6 @@ export class Grid {
 		this.startingPosition = opts.startingPosition;
 
 		this.blockSet = new BlockSet(this.width, this.height);
-
-		this.boundaries = {
-			left: BLOCK_SIZE / 2,
-			right: this.width * BLOCK_SIZE - BLOCK_SIZE / 2,
-			down: this.height * BLOCK_SIZE - BLOCK_SIZE / 2,
-		};
 	}
 
 	getActivePiece() {
@@ -36,33 +30,30 @@ export class Grid {
 
 	/** Moves the active piece to the left, or doesn't if it can't. */
 	moveLeft() {
-		const boundary = this.boundaries.left;
-		const valid = this.activePiece.applyMovement(Tetronimo.LEFT, boundary);
+		const valid = this.activePiece.applyMovement(Tetronimo.LEFT, this.blockSet);
 		return { valid: valid };
 	}
 
 	/** Moves the active piece to the right, or doesn't if it can't. */
 	moveRight() {
-		const boundary = this.boundaries.right;
-		const valid = this.activePiece.applyMovement(Tetronimo.RIGHT, boundary);
+		const valid = this.activePiece.applyMovement(Tetronimo.RIGHT, this.blockSet);
 		return { valid: valid };
 	}
 
 	/** Moves the active piece downwards, or doesn't if it can't. */
 	shiftDown() {
-		const boundary = this.boundaries.down;
-		const valid = this.activePiece.applyMovement(Tetronimo.DOWN, boundary);
+		const valid = this.activePiece.applyMovement(Tetronimo.DOWN, this.blockSet);
 		return { valid: valid };
 	}
 
 	/** Rotates the active piece, or doesn't if it can't. */
 	rotate() {
-		const valid = this.activePiece.applyMovement(Tetronimo.ROTATE, this.boundaries);
+		const valid = this.activePiece.applyMovement(Tetronimo.ROTATE, this.blockSet);
 		return { valid: valid };
 	}
 
 	dropDown(nextPiece) {
-		while (this.activePiece.applyMovement(Tetronimo.DOWN, this.boundaries.down));
+		while (this.activePiece.applyMovement(Tetronimo.DOWN, this.blockSet));
 		this._placeActivePiece();
 		this.setActivePiece(nextPiece);
 		return { valid: true, lines: this.blockSet.clearLines().lines };

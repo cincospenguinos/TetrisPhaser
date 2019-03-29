@@ -41,7 +41,7 @@ export class BlockSet {
 
 	/** Places a block at the location provided. */
 	placeBlockAt(position) {
-		if (this._positionInBounds(position) && !this.hasBlockAt(position)) {
+		if (this.positionInBounds(position) && !this.hasBlockAt(position)) {
 			const xVals = this.blocks.get(position.y) || new Set();
 			xVals.add(position.x);
 			this.blocks.set(position.y, xVals);
@@ -54,6 +54,11 @@ export class BlockSet {
 		return xVals && xVals.has(position.x);
 	}
 
+	/** Returns whether or not the position provided is in bounds. */
+	positionInBounds(position) {
+		return position.x < this.dimensions.width && position.x >= 0 && position.y < this.dimensions.height;
+	}
+
 	/*---PRIVATE */
 
 	/** Helper method. Shifts all blocks down to the bottom from the row provided. */
@@ -64,10 +69,5 @@ export class BlockSet {
 			this.blocks.set(y + diffY, xVals);
 			this.blocks.delete(y);
 		}
-	}
-
-	/** Helper method. Returns whether or not the position provided is in bounds. */
-	_positionInBounds(position) {
-		return position.x < this.dimensions.width && position.x >= 0 && position.y < this.dimensions.height && position.y >= 0;
 	}
 }
