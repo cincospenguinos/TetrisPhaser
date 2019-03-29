@@ -7,6 +7,7 @@
 import { BLOCK_SIZE } from '../const.js';
 import { Tetronimo } from './tetronimo.js';
 import { BlockSet } from './blockSet.js';
+import { DeadBlocks } from '../service/deadBlocks.js';
 import { toGridUnits, toPixels } from '../utils.js';
 
 export class Grid {
@@ -16,6 +17,7 @@ export class Grid {
 		this.startingPosition = opts.startingPosition;
 
 		this.blockSet = new BlockSet(this.width, this.height);
+		this.deadBlocks = new DeadBlocks();
 	}
 
 	getActivePiece() {
@@ -56,16 +58,26 @@ export class Grid {
 		while (this.activePiece.applyMovement(Tetronimo.DOWN, this.blockSet));
 		this._placeActivePiece();
 		this.setActivePiece(nextPiece);
-		return { valid: true, lines: this.blockSet.clearLines().lines };
+
+		const response = this._clearLines();
+		return { valid: true, lines: response.lines, blocks: response.blocks };
 	}
 
 	/*---PRIVATE */
 
+	/** Helper method. Clears the lines in the block set and manages dead blocks helper. */
+	_clearLines() {
+		const response = this.blockSet.clearLines();
+		response.blocks = this.deadBlocks.blocksMatching(response.blocks.map(b => toPixels(b)));
+		return response;
+	}
+
 	/** Helper method. Places the active piece at its current position into the block set. */
 	_placeActivePiece() {
-		this.blockSet.placeBlocks(this.activePiece.getBlocks()
+		const blocks = this.activePiece.getBlocks()
 			.map(b => b.getPosition())
-			.map(p => toGridUnits(p))
-		);
+			.map(p => toGridUnits(p));
+		this.blockSet.placeBlocks(blocks);
+		this.deadBlocks.addBlocks(this.activePiece.getBlocks());
 	}
 }
