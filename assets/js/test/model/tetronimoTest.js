@@ -2,6 +2,7 @@
  * tetronimoTest.js
  */
 import { TETRONIMO_TYPES, BLOCK_SIZE } from '../../src/const.js';
+import { toPixels, toGridUnits } from '../../src/utils.js';
 import { Tetronimo } from '../../src/model/tetronimo.js';
 import { TestHelper } from '../testHelper.js';
 
@@ -59,15 +60,12 @@ QUnit.module('TetronimoTest', () => {
 		});
 
 		QUnit.test('respects other blocks', (assert) => {
-			const tetronimo = TestHelper.getTetronimo({ 
-				x: BLOCK_SIZE / 2, 
-				y: BLOCK_SIZE / 2 
-			}, TETRONIMO_TYPES.LONG_PIECE);
+			const tetronimo = TestHelper.getTetronimo(toPixels({ x: 0, y: 0 }), TETRONIMO_TYPES.LONG_PIECE);
 			const blockSet = TestHelper.getBlockSet(1, 6);
 			assert.ok(blockSet.placeBlockAt({ x: 0, y: 5 }));
 
 			while(tetronimo.applyMovement(Tetronimo.DOWN, blockSet));
-			tetronimo.getBlocks().forEach(b => assert.ok(b.getPosition().y > 6));
+			tetronimo.getBlocks().forEach(b => assert.ok(toGridUnits(b.getPosition()).y < 5));
 		});
 	});
 });

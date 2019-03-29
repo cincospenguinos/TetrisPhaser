@@ -27,7 +27,7 @@ export class BlockSet {
 			if (rowHasLine) {
 				lines += 1;
 			} else {
-				blocks = this._shiftLines(y);
+				lines === 0 ? blocks = [] : blocks = this._shiftLines(y);
 				break;
 			}
 		}

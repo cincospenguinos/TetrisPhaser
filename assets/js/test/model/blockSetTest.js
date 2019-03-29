@@ -39,6 +39,8 @@ QUnit.module('BlockSet', () => {
 			
 			const result = blockSet.clearLines();
 			assert.equal(result.lines, 0);
+			assert.ok(blockSet.hasBlockAt({ x: 0, y: 9 }));
+			assert.ok(blockSet.hasBlockAt({ x: 1, y: 9 }));
 		});
 
 		QUnit.test('returns 3 when three lines are cleared', (assert) => {
