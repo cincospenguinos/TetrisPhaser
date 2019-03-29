@@ -36,7 +36,7 @@ export class BlockSet {
 
 	/** Places all the blocks at the locations associated. Must be an array of positions. */
 	placeBlocks(blocks) {
-		blocks.forEach(b => placeBlockAt(b));
+		blocks.forEach(b => this.placeBlockAt(b));
 	}
 
 	/** Places a block at the location provided. */

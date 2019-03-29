@@ -6,12 +6,15 @@
  */
 import { BLOCK_SIZE } from '../const.js';
 import { Tetronimo } from './tetronimo.js';
+import { BlockSet } from './blockSet.js';
 
 export class Grid {
 	constructor(opts) {
 		this.width = Math.floor(opts.width / BLOCK_SIZE);
 		this.height = Math.floor(opts.height / BLOCK_SIZE);
 		this.startingPosition = opts.startingPosition;
+
+		this.blockSet = new BlockSet(this.width, this.height);
 
 		this.boundaries = {
 			left: BLOCK_SIZE / 2,
@@ -59,11 +62,20 @@ export class Grid {
 
 	dropDown(nextPiece) {
 		while (this.activePiece.applyMovement(Tetronimo.DOWN, this.boundaries.down));
+		this._placeActivePiece();
 		this.setActivePiece(nextPiece);
-		return { valid: true };
+		return { valid: true, lines: this.blockSet.clearLines().lines };
 	}
 
 	/*---PRIVATE */
+
+	/** Helper method. Places the active piece at its current position into the block set. */
+	_placeActivePiece() {
+		this.blockSet.placeBlocks(this.activePiece.getBlocks()
+			.map(b => b.getPosition())
+			.map(p => this._toGridUnits(p))
+		);
+	}
 
 	/** Helper method. Converts position from grid units to pixels. */
 	_toPixels(position) {

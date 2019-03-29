@@ -147,4 +147,19 @@ QUnit.module('Grid', () => {
 		assert.equal(nextTetronimo.getOriginPosition().x, 5 * BLOCK_SIZE + BLOCK_SIZE / 2);
 		assert.equal(nextTetronimo.getOriginPosition().y, 0 * BLOCK_SIZE + BLOCK_SIZE / 2);
 	});
+
+	QUnit.test('automatically handles line clearing', (assert) => {
+		const grid = TestHelper.createGrid({
+			width: 2 * BLOCK_SIZE,
+			height: 10 * BLOCK_SIZE,
+			startingPosition: { x: 0, y: 0 },
+		});
+
+		const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
+		const nextTetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
+		grid.setActivePiece(tetronimo);
+		const result = grid.dropDown(nextTetronimo);
+
+		assert.equal(result.lines, 2);
+	});
 });
