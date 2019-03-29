@@ -126,7 +126,7 @@ QUnit.module('Grid', () => {
 			const tetronimo = TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE);
 			grid.setActivePiece(tetronimo);
 
-			let response = grid.dropDown();
+			let response = grid.dropDown(TestHelper.getTetronimo({ x: 0, y: 0 }, TETRONIMO_TYPES.SQUARE));
 			assert.ok(response.valid);
 			assert.equal(tetronimo.getOriginPosition().x, BLOCK_SIZE / 2);
 			assert.equal(tetronimo.getOriginPosition().y, 10 * BLOCK_SIZE - BLOCK_SIZE / 2);
