@@ -2,7 +2,7 @@
  * deadBlocks.js
  *
  * Object that handles what blocks hit the floor (i.e. are "dead") and offers methods to grab them to
- * be cleaned up by the GameplayScene.
+ * be cleaned up by the GameplayScene. Uses pixels for positions.
  */
 export class DeadBlocks {
 	constructor() {
@@ -23,8 +23,12 @@ export class DeadBlocks {
 			});
 		});
 
-		this.deadBlocks = this.deadBlocks.filter(b => blocksToClean.includes(b));
+		this.deadBlocks = this.deadBlocks.filter(b => !blocksToClean.includes(b));
 		return blocksToClean;
+	}
+
+	hasBlock(block) {
+		return this.deadBlocks.includes(block);
 	}
 
 	/** Adds the list of blocks provided to the collection of dead blocks. */

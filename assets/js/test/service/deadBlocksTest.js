@@ -14,5 +14,7 @@ QUnit.module('DeadBlocks', () => {
 		const blocksToClean = deadBlocks.blocksMatching([{ x: 0, y: 100 }]);
 		assert.ok(blocksToClean.includes(blockOne));
 		assert.notOk(blocksToClean.includes(blockTwo));
+
+		assert.ok(deadBlocks.hasBlock(blockTwo));
 	});
 });
