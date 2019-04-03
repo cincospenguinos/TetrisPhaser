@@ -21,4 +21,9 @@ export class GameplayHelper {
 			block.setSprite(sprite);
 		});
 	}
+
+	/** Destroys the blocks in the array provided. */
+	destroyBlocks(blocks) {
+		blocks.forEach(b => b.getSprite().destroy());
+	}
 }

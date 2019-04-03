@@ -11,6 +11,10 @@ export class Block {
 		this.position = position;
 	}
 
+	getSprite() {
+		return this.sprite;
+	}
+
 	setSprite(sprite) {
 		this.sprite = sprite;
 	}

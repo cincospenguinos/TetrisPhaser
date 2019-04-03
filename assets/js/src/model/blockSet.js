@@ -69,8 +69,9 @@ export class BlockSet {
 	/** Helper method. Shifts all blocks down to the bottom from the row provided. */
 	_shiftLines(row) {
 		const blocks = [];
+
 		for (let y = this.dimensions.height - 1; y > row; y--) {
-			blocks.push(Array.from(this.blocks.get(y).values()))
+			blocks.push(Array.from(this.blocks.get(y)).map(x => { return { x: x, y: y }}));
 		}
 
 		const diffY = (this.dimensions.height - 1) - row;

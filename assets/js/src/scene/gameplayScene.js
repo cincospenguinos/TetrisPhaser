@@ -56,7 +56,8 @@ export class GameplayScene extends Phaser.Scene {
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
 			this.grid.moveRight();
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
-			this.grid.dropDown(this._newTetronimo());
+			const blocks = this.grid.dropDown(this._newTetronimo()).blocks;
+			this.helper.destroyBlocks(blocks);
 		} else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
 			this.grid.rotate(); // TODO: Handle rotation
 		}
